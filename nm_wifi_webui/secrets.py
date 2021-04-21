@@ -9,9 +9,6 @@ import os, sys
 
 import bencode
 
-bencode.encode_func[type(None)] = lambda x, r: r.append("n")
-bencode.decode_func["n"] = lambda x, f: (None, f + 1)
-
 
 class SecretStorage(object):
     def __init__(self, path):
@@ -24,10 +21,10 @@ class SecretStorage(object):
         if self.path.exists():
             with self.path.open() as src:
                 self.cache_src = src.read()
-                self.cache = bencode.bdecode(self.cache_src)
+                self.cache = bencode.decode(self.cache_src)
 
     def dump(self):
-        cache_dst = bencode.bencode(self.cache)
+        cache_dst = bencode.Bencode(self.cache)
         if self.cache_src == cache_dst:
             return  # no changes
         tmp_path = self.path.temporarySibling()
