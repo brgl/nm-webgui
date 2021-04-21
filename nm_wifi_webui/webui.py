@@ -99,13 +99,13 @@ class WebUI(resource.Resource):
         resource.Resource.__init__(self)
         self.log = logging.getLogger("webui.core")
 
-        for action in "online", "offline", "scan":
+        for action in b"online", b"offline", b"scan":
             self.putChild(action, WebUIAction(self, "nm_{}".format(action)))
 
         if not isinstance(static_path, FilePath):
             static_path = FilePath(static_path)
         for p in static_path.listdir():
-            self.putChild(p, File(static_path.child(p).path))
+            self.putChild(bytes(p), File(static_path.child(p).path))
 
         if not isinstance(templates_path, FilePath):
             templates_path = FilePath(templates_path)

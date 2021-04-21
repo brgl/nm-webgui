@@ -149,7 +149,7 @@ def main(argv=None):
 
     app = service.MultiService()
     webui = WebUI(static_path=opts.httpd_static, templates_path=opts.httpd_templates)
-    webui.putChild("", webui)
+    webui.putChild(b"", webui)
 
     site = server.Site(webui)
     site.noisy = False
